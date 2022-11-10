@@ -45,14 +45,18 @@ except:
 
 # This is the recommended integration with Flask
 # It scopes session within HTTP requests
-from flask import _app_ctx_stack
+try:
+    from greenlet import getcurrent as _get_ident
+except ImportError:
+    from threading import get_ident as _get_ident
+
 Session = sessionmaker(bind=engine)
 db_session = scoped_session(
     sessionmaker(
         autocommit=False,
         autoflush=False,
         bind=engine),
-    scopefunc=_app_ctx_stack.__ident_func__
+    scopefunc=_get_ident
 )
 Base = declarative_base() # prints (no name)
 Base.query = db_session.query_property()
