@@ -7,6 +7,7 @@ chmod 777 /var/qaboard
 
 # Apply migrations if needed
 cd /qaboard/backend/backend
+export PYTHONPATH=/qaboard/backend
 alembic upgrade head || alembic downgrade head || alembic stamp head
 
 
