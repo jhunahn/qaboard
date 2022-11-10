@@ -8,7 +8,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json package-lock.json ./
 
 # In the past we had ulimit issues and "ulimit -n 2000 &&"
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY . ./
 ARG REACT_APP_QABOARD_DOCS_ROOT="https://samsung.github.io/qaboard/"
 ENV REACT_APP_QABOARD_DOCS_ROOT=$REACT_APP_QABOARD_DOCS_ROOT

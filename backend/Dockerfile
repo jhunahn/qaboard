@@ -58,7 +58,9 @@ COPY backend/pyproject.toml backend/poetry.lock ./
 # https://github.com/python-poetry/poetry/issues/1579
 # https://github.com/python-poetry/poetry/issues/214 
 RUN poetry config virtualenvs.create false
-RUN poetry install --no-root
+RUN poetry lock
+RUN poetry add certifi
+RUN poetry install --no-root  --no-dev
 ENV QA_NO_CHECK_FOR_UPDATES=1
 
 # Copy-in everything else:
@@ -78,7 +80,7 @@ WORKDIR /qaboard
 # this way the install below would not install any 3rd parties :| 
 WORKDIR /qaboard/backend
 COPY backend/wait-for-it.sh backend/init.sh backend/uwsgi.ini ./
-RUN poetry install --extras qaboard
+RUN pip install qaboard
 
 # TODO: "poetry add" it 
 RUN pip install celery
